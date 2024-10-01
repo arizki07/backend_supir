@@ -50,25 +50,24 @@ class AuthController extends Controller
     public function authenticate(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'email' => 'required|email',
-            'password' => 'required',
+            'username' => 'required|string',
+            'password' => 'required|string',
         ]);
 
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);
         }
 
-        $credentials = $request->only('email', 'password');
+        $credentials = $request->only('username', 'password');
 
-        // Attempt to create a token
         if (!$token = JWTAuth::attempt($credentials)) {
+            \Log::error('Login failed', ['credentials' => $credentials]);
             return response()->json([
                 'success' => false,
-                'message' => 'Email atau Password Salah',
+                'message' => 'Username atau Password Salah',
             ], 401);
         }
 
-        // Retrieve the authenticated user
         $user = JWTAuth::user();
 
         return response()->json([
