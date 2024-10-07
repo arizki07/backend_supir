@@ -10,7 +10,7 @@ class KartuPengecekanItm extends Model
     use HasFactory;
     protected $table = 'kartupengecekanitm';
     protected $fillable = [
-        'id_muat',
+        'pengecekan_id',
         'tujuan',
         'nama',
         'lot',
@@ -18,6 +18,11 @@ class KartuPengecekanItm extends Model
         'val_jenis',
         'bale',
         'cones',
-        'dibuat',
+        'dibuat'
     ];
+
+    public function kartuPengecekan()
+    {
+        return $this->belongsTo(KartuPengecekan::class, 'pengecekan_id');
+    }
 }

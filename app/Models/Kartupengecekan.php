@@ -25,6 +25,11 @@ class Kartupengecekan extends Model
         'personel2',
         'personel3',
         'personel4',
-        'totbale',
+        'totbale'
     ];
+
+    public function items()
+    {
+        return $this->hasMany(KartuPengecekanItm::class, 'pengecekan_id');
+    }
 }
