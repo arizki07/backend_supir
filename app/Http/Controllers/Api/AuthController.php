@@ -70,6 +70,14 @@ class AuthController extends Controller
 
         $user = JWTAuth::user();
 
+        // Check if the user's status is inactive
+        if ($user->status !== 'active') {
+            return response()->json([
+                'success' => false,
+                'message' => 'Akun Anda tidak aktif. Silakan hubungi admin.',
+            ], 403); // 403 Forbidden status code
+        }
+
         return response()->json([
             'success' => true,
             'user' => $user,
