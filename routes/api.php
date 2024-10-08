@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\ProfileController;
+use App\Http\Controllers\Master\LaporanController;
 use App\Http\Controllers\Master\PengecekanController;
 use App\Http\Controllers\Master\UsersController as MasterUsersController;
 use Illuminate\Http\Request;
@@ -24,3 +25,5 @@ Route::post('login', [AuthController::class, 'authenticate']);
 
 Route::post('pengecekan', [PengecekanController::class, 'store']);
 Route::get('getPeng', [PengecekanController::class, 'getPengecekan']);
+
+Route::get('getlaporan', [LaporanController::class, 'getLaporan']);
