@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('kartupengecekanitm', function (Blueprint $table) {
             $table->id();
-            $table->string('id_muat')->nullable();
+            $table->unsignedBigInteger('pengecekan_id');
             $table->string('tujuan')->nullable();
             $table->string('nama')->nullable();
             $table->string('lot')->nullable();
@@ -23,6 +23,8 @@ return new class extends Migration
             $table->float('cones')->nullable();
             $table->string('dibuat')->nullable();
             $table->timestamps();
+
+            $table->foreign('pengecekan_id')->on('kartupengecekan')->references('id');
         });
     }
 
