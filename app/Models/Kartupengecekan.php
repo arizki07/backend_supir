@@ -27,4 +27,9 @@ class Kartupengecekan extends Model
         'personel4',
         'totbale',
     ];
+
+    public function items()
+    {
+        return $this->hasMany(KartuPengecekanItm::class, 'id_muat', 'idmuat');
+    }
 }

@@ -20,4 +20,9 @@ class KartuPengecekanItm extends Model
         'cones',
         'dibuat',
     ];
+
+    public function kartuPengecekan()
+    {
+        return $this->belongsTo(KartuPengecekan::class, 'id_muat', 'idmuat');
+    }
 }
