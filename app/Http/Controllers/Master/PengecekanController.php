@@ -13,6 +13,12 @@ use Illuminate\Support\Facades\Log;
 
 class PengecekanController extends Controller
 {
+    public function getPengecekan()
+    {
+        $data = DB::table('kartupengecekan')->get();
+        return response()->json($data);
+    }
+
     public function store(Request $request)
     {
         try {
@@ -80,7 +86,8 @@ class PengecekanController extends Controller
             ]);
 
             foreach ($validated['items'] as $item) {
-                $kartuPengecekan->items()->create([
+                DB::table('kartupengecekanitm')->insert([
+                    'id_muat' => $idmuat,
                     'tujuan' => $item['tujuan'],
                     'nama' => $item['nama'],
                     'lot' => $item['lot'],
@@ -88,7 +95,8 @@ class PengecekanController extends Controller
                     'val_jenis' => $item['val_jenis'],
                     'cones' => $item['cones'],
                     'bale' => $item['bale'],
-                    'dibuat' => $user->name
+                    'dibuat' => $user->name,
+                    'created_at' => now(),
                 ]);
             }
 
@@ -131,5 +139,30 @@ class PengecekanController extends Controller
         $newNumber = str_pad((int)$numberPart + 1, 4, '0', STR_PAD_LEFT);
 
         return 'BR' . $datePart . $newNumber;
+    }
+
+    public function getDataByIdMuat($idmuat)
+    {
+        $data = DB::table('kartupengecekan')
+            ->join('kartupengecekanitm', 'kartupengecekan.idmuat', '=', 'kartupengecekanitm.id_muat')
+            ->where('kartupengecekan.idmuat', $idmuat)
+            ->select(
+                'kartupengecekan.*',
+                'kartupengecekanitm.tujuan',
+                'kartupengecekanitm.nama',
+                'kartupengecekanitm.lot',
+                'kartupengecekanitm.jenis',
+                'kartupengecekanitm.val_jenis',
+                'kartupengecekanitm.bale',
+                'kartupengecekanitm.cones',
+                'kartupengecekanitm.dibuat'
+            )
+            ->get();
+
+        if ($data->isEmpty()) {
+            return response()->json(['message' => 'Data not found'], 404);
+        }
+
+        return response()->json($data);
     }
 }

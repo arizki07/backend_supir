@@ -84,4 +84,34 @@ class AuthController extends Controller
             'token' => $token,
         ], 200);
     }
+
+    public function logout(Request $request)
+    {
+        try {
+            // Mendapatkan token dari request
+            $token = JWTAuth::getToken();
+
+            // Memastikan token valid dan menghapusnya
+            if ($token) {
+                JWTAuth::invalidate($token);
+
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Berhasil logout',
+                ], 200);
+            } else {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Token tidak ditemukan',
+                ], 400);
+            }
+        } catch (\Exception $e) {
+            \Log::error('Logout failed', ['error' => $e->getMessage()]);
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Gagal logout. Silakan coba lagi.',
+            ], 500);
+        }
+    }
 }
